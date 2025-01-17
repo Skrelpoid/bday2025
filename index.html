@@ -1,1 +1,103 @@
-BDAY2025
+<html>
+
+<head>
+    <title>Super Duper Tolles Quiz</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button, input {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content">
+            <h1 id="frage">Frage</h1>
+            <div id="antworten">Antworten</div>
+        </div>
+    </div>
+</body>
+<script>
+    var fragenIndex = 0;
+    var fragen = [
+        {
+            "frage": "1. Welcher Planet ist der Sonne am nächsten?",
+            "antworten": "merkur"
+        },
+        {
+            "frage": "2. Was bedeutet das englische Wort \"Game\" auf Deutsch?",
+            "antworten": "spiel"
+        },
+        {
+            "frage": "3. Was ist das Kolloseum in Rom?",
+            "antworten": ["Arena", "Badeanstalt", "Regierungsgebäude", "Straße"]
+        },
+        {
+            "frage": "4. 2^5 - 3^3 - 2=",
+            "antworten": "1"
+        },
+        {
+            "frage": "5. In welchem Monat warst du auf deinem ersten Konzert?",
+            "antworten": "juli"
+        },
+        {
+            "frage": "6. Welches Jahr haben wir?",
+            "antworten": "2025"
+        },
+        {
+            "frage": "Letzte Frage: Was ist dein Geschenk?",
+            "antworten": "linkin park konzert"
+        }
+    ]
+
+    function multiChoiceAntwort(index) {
+        handleAntwort(index == 0);
+    }
+
+    function textAntwort() {
+        var element = document.getElementById("textantwort");
+        var text = element.value.toLowerCase();
+        var aktuelleFrage = fragen[fragenIndex];
+        console.log(`${text} == ${aktuelleFrage.antworten.toLowerCase()}?`)
+        handleAntwort(aktuelleFrage.antworten.toLowerCase() == text);
+    }
+
+    function frageStellen() {
+        var frageElement = document.getElementById("frage");
+        var antwortenElement = document.getElementById("antworten");
+        if (fragenIndex >= fragen.length) {
+            frageElement.innerHTML = "Glückwunsch"
+            antwortenElement.innerHTML = "Du hast gewonnen!"
+        }
+        var aktuelleFrage = fragen[fragenIndex];
+        frageElement.innerHTML = aktuelleFrage.frage;
+
+        if (Array.isArray(aktuelleFrage.antworten)) {
+            antwortenElement.innerHTML = "";
+            aktuelleFrage.antworten.forEach((antwort, index) => {
+                antwortenElement.innerHTML += `<button onclick="multiChoiceAntwort(${index})">${antwort}</button>`;
+            });
+        } else {
+            antwortenElement.innerHTML = "<form onsubmit=\"textAntwort()\"><input id=\"textantwort\" type=\"text\"><input type=\"submit\" value=\"Bestätigen\"><form>";
+        }
+    }
+
+    function handleAntwort(richtig) {
+        if (richtig) {
+            fragenIndex++;
+        } else {
+            fragenIndex = 0;
+        }
+        frageStellen();
+    }
+
+    frageStellen();
+</script>
+
+</html>
